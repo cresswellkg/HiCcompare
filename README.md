@@ -1,6 +1,14 @@
-# Material for the ISMB 2018 proceedings submission
+# Genome Research submission
 
-https://www.iscb.org/ismb2018-submit/proceedings
+Instructions for authors:
+https://genome.cshlp.org/site/misc/ifora_mspreparation.xhtml
+
+Paper length in the journal is between two and 12 journal pages. A manuscript of 28-32 typed, 
+DOUBLE-SPACED pages with 27 lines of 11-point text per page (a manuscript of 50,000 characters) 
+with four to six figures and one or two tables will translate to 12 printed pages in the journal.
+
+Manuscript sections should be presented in the following order: 
+TITLE PAGE, ABSTRACT (the abstract cannot exceed 250 words), INTRODUCTION, RESULTS, DISCUSSION, METHODS, DATA ACCESS
 
 - `HiCcompare_manuscript.Rmd` - Dozmorov edits of `manuscript/3D_DNA-manuscript-Bioinformatics.Rmd`
 - `Untitled.Rmd` - temporary file
