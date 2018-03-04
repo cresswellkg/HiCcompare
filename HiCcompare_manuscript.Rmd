@@ -52,7 +52,7 @@ $$\begin{cases} log_2(\hat{IF}_{1D}) = log_2(IF_{1D}) + f(D)/2 \\
 log_2(\hat{IF}_{2D}) = log_2(IF_{2D}) - f(D)/2
 \end{cases}  $$
 
-where $f(D)$ is the predicted value from the loess regression at a distance $D$. The $log_2(\hat{IF})$ values are then anti-logged to obtain the normalized IFs. Note that for both Hi-C datasets the average interaction frequency remains unchanged, as the one set is increased by the factor of $f(D)/2$ while the other is decreased by the same amount. Any normalized IFs with values less than one are not considered in further analyses. The joint normalization was tested against five methods for normalizing individual Hi-C matrices, ChromoR [@Shavit:2014aa], ICE [@Imakaev:2012aa], KR [@knight2012fast], SCN [@Cournac:2012aa], MA [@Lun:2015aa] (Supplementary Section 1).
+where $f(D)$ is the predicted value from the loess regression at a distance $D$. The $log_2(\hat{IF})$ values are then anti-logged to obtain the normalized IFs. Note that for both Hi-C datasets the average interaction frequency remains unchanged, as $IF_1$ is increased by the factor of $f(D)/2$ while $IF_2$ is decreased by the same amount. Any normalized IFs with values less than one are not considered in further analyses. The joint normalization was tested against five methods for normalizing individual Hi-C matrices, ChromoR [@Shavit:2014aa], ICE [@Imakaev:2012aa], KR [@knight2012fast], SCN [@Cournac:2012aa], MA [@Lun:2015aa] (Supplementary Section 1).
 
 ## 2.3 Excluding potentially problematic regions from the joint normalization
 
