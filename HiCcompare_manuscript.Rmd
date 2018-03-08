@@ -176,15 +176,23 @@ Analyzing Hi-C data for differences necessarily involves testing of multiple hyp
 
 As there is no "gold standard" for differential chromatin interactions, we created such _a priori_ known differences by introducing controlled changes to replicate Hi-C datasets [@Dozmorov:2010aa]. To introduce these a priori known differences we start with two replicates of Hi-C data from the same cell type. It is assumed that any differences in these replicates are due to noise or technical biases. Next we randomly sample a specified number of entries in the contact matrix. These sampled entries are where the changes will be introduced. The IFs for each of these entries in the two matrices are set to their average value between the replicates and then one of them is multiplied by a specified fold change. This introduces a true difference at an exact fold change between the two replicates. The benefit of using joint normalization vs. individually normalized datasets was quantified by the improvement in power of detecting the pre-defined chromatin interaction differences. Standard classifier performance measures (Supplementary Section 4), summarized in the Matthews Correlation Coefficient (MCC) metric, were assessed. The results of the HiCcompare analysis were further compared with those obtained with diffHiC method [@Lun:2015aa].
 
-## 4.8 Concordance between A/B genomic compartments
+## 4.8 Analysis of K562 and GM12878
+
+Data was obtained from GEO (GSE63525) [Rao 2014 !!!]. Sample numbers are displayed in Table XX. Firs the maximum resolution of each dataset was calculated using `Juicer` [Durand 2016 !!!]. Next replicates for each cell type were combined and then input into HiCcompare for joint normalization and differential analysis. This was performed at resolutions of 1MB, 100KB, 50KB, 10KB, and 5KB. The differential regions were intersected with the locations of all genes using BEDtools. Then the genes enriched in the differential regions were input into a KEGG pathway enrichment analysis using the `enrichR` R package.
+
+## 4.9 Comparison with FIND
+
+The two replicates of GM12878 from section 4.8 were used as the basis for comparing HiCcompare and FIND. A priori known differences were introduced into these replicates as described in section 4.7. For the data to be entered into FIND we used the VC squared normalization method from `Juicer` as described in the FIND paper and the raw data was entered into HiCcompare. We performed this analysis at resolutions of 1MB, 100KB, and 50KB with fold changes of 2, 3, and 5 for the true changes. Standard classifier performance measures were calculated for each method and MD plots showing where each method was detecting differences were produced. 
+
+## 4.10 Concordance between A/B genomic compartments
 
 To assess the effect of normalization of the detection of A/B compartments, they were defined using the Principal Components Analysis (PCA) method [@Lieberman-Aiden:2009aa] using the raw, jointly and individually normalized Hi-C data. The concordance of compartment detection was evaluated using three metrics: 1) the Pearson correlation coefficient between the vectors of principal components (PCs) detected from raw and normalized data, 2) the overlap of signs of PCs defining A (positive) and B (negative) compartments, and 3) the Jaccard overlap statistics.
 
-## 4.9 Parallelization
+## 4.11 Parallelization
 
 The biggest advantage of loess - the ability to model any biases in the data without explicitly specifying them - comes at the cost of increased computation. We implemented a parallelization strategy for processing chromosome-specific chromatin interaction matrices on multiple cores, improving the total run time (Supplementary Section 1). The parallelization strategy makes use of the Bioconductor BiocParallel R package.
 
-## 4.10 Availability and Future Directions
+## 4.12 Availability and Future Directions
 
 HiCcompare is available on Bioconductor at [https://bioconductor.org/packages/HiCcompare/](https://bioconductor.org/packages/HiCcompare/) or on GitHub at [https://github.com/dozmorovlab/HiCcompare](https://github.com/dozmorovlab/HiCcompare). The package includes vignettes with test data and documentation for all functions. The "manuscript_bioinformatics" branch of the GitHub repository contains code to generate all results referenced in this manuscript. HiCcompare is released under the MIT open source software license.
 
