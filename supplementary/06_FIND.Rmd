@@ -26,7 +26,7 @@ options(stringsAsFactors = FALSE)
 
 ## GM12878 vs. K562 comparison
 
-In the FIND paper they tested their method by performing an analysis to find differences between GM12878 and K562 cell lines. We repeated this analysis with HiCcompare and compared our results to FIND. 
+In the FIND paper they tested their method by performing an analysis to find differences between GM12878 and K562 cell lines. We repeated this analysis with HiCcompare and compared our results to FIND. Table 6.1 lists the maximum resolution of each of the datasets from the analysis. Figure 6.1 shows the differences detected between GM12878 and K562 by HiCcompare and FIND.
 
 **Table 6.1. Maximum resolution for Hi-C data.** Maximum resolution for each dataset used in the GM12878 vs K562 comparison as calculated by the `calculate_map_resolution.sh` script from `Juicer`. 
 
@@ -37,7 +37,8 @@ In the FIND paper they tested their method by performing an analysis to find dif
 | GM12878 R1 | GSM1551574  | 8.7 KB             |
 | GM12878 R2 | GSM1551575  | 8.4 KB             |
 
-**Figure 6.1. Comparison of HiCcompare detected regions and FIND detected regions.** Intereactions detected by HiCcompare are shown in red, interactions detected by FIND are shown in yellow. Data shown before any normalization. Chr X of GM12878 vs. K562 at 1MB resolution. 
+
+**Figure 6.1. Comparison of HiCcompare detected regions and FIND detected regions for GM12878 vs K562.** Intereactions detected by HiCcompare are shown in red, interactions detected by FIND are shown in yellow. Data shown after HiCcompare's loess normalization. VC Square root normalized data was used for the FIND analysis and the raw data was input into the HiCcompare analysis. Significant interactions detected by FIND tend to have small fold changes while differences detected by HiCcompare have much larger fold changes. Chr 1 of GM12878 vs. K562 at 1MB resolution. 
 ```{r}
 library(dplyr)
 library(data.table)
@@ -47,7 +48,7 @@ load(file = 'supplementary/1mb_results.RDA')
 
 combine.MD <- function(hiccompare, find) {
   # par(mfrow = c(1,2))
-  M <- hiccompare$M
+  M <- hiccompare$adj.M
   D <- hiccompare$D
   new.table <- left_join(hiccompare, find, by = c('start1' = 'region1', 'start2' = 'region2'))
   smoothScatter(D, M, xlab = 'Distance', ylab = 'M', main = 'HiCcompare vs FIND')
@@ -63,7 +64,7 @@ combine.MD <- function(hiccompare, find) {
   legend('bottomright', legend = c('HiCcompare', 'FIND'), fill = c('red', 'yellow'), bty = 'n', horiz = TRUE)
 }
 
-combine.MD(hic.table[[23]], find_pos[[23]])
+combine.MD(hic.table[[1]], find_pos[[1]])
 ```
 
 
