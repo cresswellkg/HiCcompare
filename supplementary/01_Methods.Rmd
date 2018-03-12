@@ -286,7 +286,7 @@ knitr::kable(A.table)
 
 ### Determining which A quantile to filter out
 
-Here we add differences to data from replicates of the GM12878 cell line. We then perform a HiCcompare analysis using a sequence of values for the A quantile or minimum A value to be filtered out. All differences with an A value less than the quantile (or minimum value) specified are filtered out and ignored. We then plot the number of true positives and false positives against the A quantile (or value) filtered. 
+Here we add differences to data from replicates of the GM12878 cell line. We then perform a HiCcompare analysis using a sequence of values for the minimum A value to be filtered out. All differences with an A value less than the minimum value specified are filtered out and ignored. We then plot the number of true positives and false positives against the A value filtered. 
 
 ```{r}
 determine_A <- function(raw1, raw2, FC = 2, numChanges = 100, alpha = 0.05, span = NA,
@@ -382,20 +382,8 @@ determine_A <- function(raw1, raw2, FC = 2, numChanges = 100, alpha = 0.05, span
 }
 ```
 
-#### 1MB Resolution
 
-Here we add 100 differences at a 2 fold change to data. At lower resolutions it is better to use the `A.quantile` option for controlling the differences with low average expression. This shows that filtering the 10-20% quantiles is a good range for this resolution.
-
-```{r}
-chr1.primary <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_primary_1000000/primary.chr1.1000000.txt")
-chr1.replicate <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_replicate_1000000/replicate.chr1.1000000.txt")
-
-determine_A(chr1.primary, chr1.replicate, span = 0.09)
-```
-
-#### 100KB Resolution
-
-At higher resolutions it is better to use the `A.min` option for controlling differences with low average expression. There is much greater variability in M at higher resolutions due to the generally lower levels of average expression. The data with no changes added to it looks like this on the MD plot after difference detection with no filtering:
+There is much greater variability in M at higher resolutions due to the generally lower levels of average expression. The data at 100KB resolution with no changes added to it looks like this on the MD plot after difference detection with no filtering:
 
 ```{r}
 chr1.100kb.primary <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_primary_100000/primary.chr1.100000.txt")
@@ -415,9 +403,6 @@ determine_A(chr1.100kb.primary, chr1.100kb.replicate, FC = 4, span = 0.025, A_se
 
 Many of the differences with high M values are derived from interactions where one IF is close to 1 and the other is in the range of 15 to 30. Filtering out any differences where A < 15 gives the best results and allows the most true differences to be detected and the least number of false positives. This may require some tuning to different datasets and resolutions.
 
-```{r}
-determine_A(chr1.100kb.primary, chr1.100kb.replicate, FC = 4, span = 0.025, A_seq = seq(0, 0.5, by = 0.01), numChanges = 5000)
-```
 
 ### Summary 
 
