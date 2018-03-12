@@ -141,7 +141,7 @@ if (regenerate_figures) {
 
 ### Summary
 
-`loess` works well for removing biases at resolutions between 1MB and 100KB. Once the resolution is higher than 100KB, the procedure begins to fail due to the sparsity of the data. At high resolutions Hi-C data becomes very sparse with most values in the matrix being 0 or a small number. Thus when plotted on the MD plot the sparsity begins to show as the straight horizontal lines of points representing very small differences existing between the two datasets due to the sparsity of the sequencing coverage.
+`loess` works well for removing biases at resolutions between 1MB and 50KB. Once the resolution is higher than 50KB, the procedure begins to fail due to the sparsity of the data. At high resolutions Hi-C data becomes very sparse with most values in the matrix being 0 or a small number. Thus when plotted on the MD plot the sparsity begins to show as the straight horizontal lines of points representing very small differences existing between the two datasets due to the sparsity of the sequencing coverage. As sequencing techniques improve and the depth of Hi-C sequencing is increased the issues of sparsity at higher resolutions should lessen.
 
 ## The effect of normalization methods on removing global differences
 
