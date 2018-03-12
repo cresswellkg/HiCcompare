@@ -71,6 +71,7 @@ To detect significant chromatin interaction differences, we introduced _a priori
 **Table 1. Evaluation of the effect of normalization on differential chromatin interaction detection.** Matthews Correlation Coefficient of detecting 200 controlled differences in jointly (HiCcompare) vs individually normalized Gm12878 datasets, chromosome 1, 1KB resolution. Matrices were normalized with methods corresponding to column labels, differences were detected using HiCcompare.
 
 <!--Generated from /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/supplementary/04_Differential_MCC_summary.csv-->
+[!!! Add chromoR column]
 | Fold change | HiCcompare |   MA  |  ICE  |  SCN  |   KR  |
 |:-----------:|:----------:|:-----:|:-----:|:-----:|:-----:|
 |      2      |    0.847   | 0.823 | 0.835 | 0.768 | 0.748 |
@@ -169,7 +170,7 @@ As there is no "gold standard" for differential chromatin interactions, we creat
 
 ## 4.8 Analysis of K562 and GM12878
 
-Data was obtained from GEO (GSE63525) [Rao 2014 !!!]. Sample numbers are displayed in Table XX. Firs the maximum resolution of each dataset was calculated using `Juicer` [Durand 2016 !!!]. Next replicates for each cell type were combined and then input into HiCcompare for joint normalization and differential analysis. This was performed at resolutions of 1MB, 100KB, 50KB, 10KB, and 5KB. The differential regions were intersected with the locations of all genes using BEDtools. Then the genes enriched in the differential regions were input into a KEGG pathway enrichment analysis using the `enrichR` R package.
+Data was obtained from GEO (GSE63525) [@Rao:2014aa]. Sample numbers are displayed in Table XX. Firs the maximum resolution of each dataset was calculated using `Juicer` [Durand 2016 !!!]. Next replicates for each cell type were combined and then input into HiCcompare for joint normalization and differential analysis. This was performed at resolutions of 1MB, 100KB, 50KB, 10KB, and 5KB. The differential regions were intersected with the locations of all genes using BEDtools. Then the genes enriched in the differential regions were input into a KEGG pathway enrichment analysis using the `enrichR` R package.
 
 ## 4.9 Comparison with FIND
 
@@ -189,7 +190,7 @@ HiCcompare is available on Bioconductor at [https://bioconductor.org/packages/Hi
 
 # 5 Data Access
 
-<!-- Place data sources here -->
+Public Hi-C data was obtained for all analyses presented here. Data from [@Rao:2014aa], [@Dixon:2012aa], and [@Rickman:2012aa] were used. See supplementary table 1.1 for full listings. For the comparison of GM12878 and K562 samples GSM1551574, GSM1551575, GSM1551620, and GSM1551623 from [@Rao:2014aa] were used as in [@Djekidel:2018aa].
 
 # Funding
 
