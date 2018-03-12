@@ -37,7 +37,7 @@ library(data.table)
 
 ## Data sources
 
-**Table. Hi-C data used in the current study.**
+**Table 1.1. Hi-C data used in the current study.**
 
 ```{r, echo = FALSE, message=FALSE}
 S1_Table <- data.frame(File = c("GSE63525_GM12878_insitu_primary_30.hic.gz", "GSE63525_GM12878_insitu_DpnII_combined_30.hic.gz", "GSE63525_K562_combined_30.hic.gz",
