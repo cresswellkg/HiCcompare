@@ -28,6 +28,15 @@ options(stringsAsFactors = FALSE)
 
 In the FIND paper they tested their method by performing an analysis to find differences between GM12878 and K562 cell lines. We repeated this analysis with HiCcompare and compared our results to FIND. 
 
+**Table 6.1. Maximum resolution for Hi-C data.** Maximum resolution for each dataset used in the GM12878 vs K562 comparison as calculated by the `calculate_map_resolution.sh` script from `Juicer`. 
+
+| Data Name  | GEO Sample  | Maximum Resolution |
+|------------|-------------|--------------------|
+| K562 R1    | GSM15551620 | 38.6 KB            |
+| K562 R2    | GSM1551623  | 38.7 KB            |
+| GM12878 R1 | GSM1551574  | 8.7 KB             |
+| GM12878 R2 | GSM1551575  | 8.4 KB             |
+
 **Figure 6.1. Comparison of HiCcompare detected regions and FIND detected regions.** Intereactions detected by HiCcompare are shown in red, interactions detected by FIND are shown in yellow. Data shown before any normalization. Chr X of GM12878 vs. K562 at 1MB resolution. 
 ```{r}
 library(dplyr)
@@ -58,7 +67,7 @@ combine.MD(hic.table[[23]], find_pos[[23]])
 ```
 
 
-**Table 6.1. Number of regions detected as significant by chromosome and resolution for the HiCcompare analysis of GM12878 vs K562.**
+**Table 6.2. Number of regions detected as significant by chromosome and resolution for the HiCcompare analysis of GM12878 vs K562.**
 ```{r}
 load('supplementary/num_sig_table.RDA')
 
@@ -71,19 +80,19 @@ knitr::kable(t_sig)
 
 We performed a comparison of HiCcompare and FIND by adding in a priori known differencecs to GM12878 replicate data as described in the methods section. This was performed at fold changes of 2, 3, and 5 on 1MB data for chr 18.
 
-**Table 6.2. HiCcompare vs FIND on 2 fold change introduced differences.**
+**Table 6.3. HiCcompare vs FIND on 2 fold change introduced differences.**
 ```{r}
 load('supplementary/find_v_hiccompare_tables.RDA')
 knitr::kable(chr1.fc2$rates)
 ```
 
 
-**Table 6.3. HiCcompare vs FIND on 3 fold change introduced differences.**
+**Table 6.4. HiCcompare vs FIND on 3 fold change introduced differences.**
 ```{r}
 knitr::kable(chr1.fc3$rates)
 ```
 
-**Table 6.4. HiCcompare vs FIND on 5 fold change introduced differences.**
+**Table 6.5. HiCcompare vs FIND on 5 fold change introduced differences.**
 ```{r}
 knitr::kable(chr1.fc5$rates)
 ```

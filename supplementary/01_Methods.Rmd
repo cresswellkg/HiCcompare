@@ -68,7 +68,7 @@ pander::pander(S1_Table)
 
 ## Normalization methods for individual Hi-C datasets
 
-Four methods for normalizing individual Hi-C datasets were compared with the `loess` joint normalization method. Here, we briefly describe them.
+Several methods for normalizing individual Hi-C datasets were compared with the `loess` joint normalization method. Here, we briefly describe them.
 
 The `ChromoR` method [@Shavit:2014aa] applies the Haar-Fisz Transform (HFT) to decompose a Hi-C contact map. HFT assumes the IFs in the contact map are distributed as a Poisson random variable. After HFT decomposition, wavelet shrinkage methods for Gaussian noise are applied for de-noising. The contact map is then reconstructed with the inverse HFT. The `ChromoR` R package was used to normalize the matrices  with the `correctCIM` function.   
 
