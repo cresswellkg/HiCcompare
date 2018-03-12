@@ -1,0 +1,89 @@
+---
+# title: 
+# author: "John C. Stansfield, Kellen G. Cresswell, Vladimir I. Vladimirov, Mikhail G. Dozmorov"
+output:
+  pdf_document:
+    toc: no
+csl: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/manuscript/3D_DNA-references.bib
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+# Set up the environment
+library(knitr)
+opts_chunk$set(cache.path='cache/', fig.path='img/', cache=T, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='as.is', fig.width = 10, fig.height = 4) #out.width=700, 
+library(pander)
+panderOptions('table.split.table', Inf)
+set.seed(1)
+library(dplyr)
+options(stringsAsFactors = FALSE)
+```
+
+\pagenumbering{gobble}
+
+# 6 Comparison with `FIND`
+
+## GM12878 vs. K562 comparison
+
+In the FIND paper they tested their method by performing an analysis to find differences between GM12878 and K562 cell lines. We repeated this analysis with HiCcompare and compared our results to FIND. 
+
+**Figure 6.1. Comparison of HiCcompare detected regions and FIND detected regions.** Intereactions detected by HiCcompare are shown in red, interactions detected by FIND are shown in yellow. Data shown before any normalization. Chr X of GM12878 vs. K562 at 1MB resolution. 
+```{r}
+library(dplyr)
+library(data.table)
+library(HiCcompare)
+load(file = 'supplementary/1mb_FIND_results.RDA')
+load(file = 'supplementary/1mb_results.RDA')
+
+combine.MD <- function(hiccompare, find) {
+  # par(mfrow = c(1,2))
+  M <- hiccompare$M
+  D <- hiccompare$D
+  new.table <- left_join(hiccompare, find, by = c('start1' = 'region1', 'start2' = 'region2'))
+  smoothScatter(D, M, xlab = 'Distance', ylab = 'M', main = 'HiCcompare vs FIND')
+  hiccompare.sig <- which(new.table$p.adj < 0.05)
+  find.sig <- which(new.table$detected == 1)
+  points(D[hiccompare.sig], M[hiccompare.sig], col = 'red', pch = 20)
+  points(D[find.sig], M[find.sig], col = 'yellow', pch = 20)
+  
+  # M.adj <- new.table$adj.M
+  # smoothScatter(D, M.adj, xlab = 'Distance', ylab = 'M', main = 'After HiCcompare normalization')
+  # points(D[hiccompare.sig], M.adj[hiccompare.sig], col = 'red', pch = 20)
+  # points(D[find.sig], M.adj[find.sig], col = 'yellow', pch = 20)
+  legend('bottomright', legend = c('HiCcompare', 'FIND'), fill = c('red', 'yellow'), bty = 'n', horiz = TRUE)
+}
+
+combine.MD(hic.table[[23]], find_pos[[23]])
+```
+
+
+**Table 6.1. Number of regions detected as significant by chromosome and resolution for the HiCcompare analysis of GM12878 vs K562.**
+```{r}
+load('supplementary/num_sig_table.RDA')
+
+knitr::kable(t_sig)
+```
+
+
+
+## On data with a priori known differences
+
+We performed a comparison of HiCcompare and FIND by adding in a priori known differencecs to GM12878 replicate data as described in the methods section. This was performed at fold changes of 2, 3, and 5 on 1MB data for chr 18.
+
+**Table 6.2. HiCcompare vs FIND on 2 fold change introduced differences.**
+```{r}
+load('supplementary/find_v_hiccompare_tables.RDA')
+knitr::kable(chr1.fc2$rates)
+```
+
+
+**Table 6.3. HiCcompare vs FIND on 3 fold change introduced differences.**
+```{r}
+knitr::kable(chr1.fc3$rates)
+```
+
+**Table 6.4. HiCcompare vs FIND on 5 fold change introduced differences.**
+```{r}
+knitr::kable(chr1.fc5$rates)
+```
+
