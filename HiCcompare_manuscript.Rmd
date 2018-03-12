@@ -170,9 +170,7 @@ As there is no "gold standard" for differential chromatin interactions, we creat
 
 ## 4.8 Comparison with diffHic
 
-
-
-
+To compare HiCcompare with diffHic we performed a HiCcompare analysis on RWPE1 Hi-C data [@Rickman:2012aa] using HiCcompare. This was compared to the analysis performed in the diffHic paper [@Lun:2015aa]. We performed the analysis at 1MB resolution as done by Lun et al. Because diffHic takes unaligned Hi-C data as input it was not possible to directly compare our method to diffHic using introduced known changes. We performed an overlap analysis of the regions detected by our method with the regions detected by diffHic. Additionally we compared the fold changes and average expression values of the regions detected by each method. 
 ## 4.9 Comparison with FIND
 
 In order to make a comparison with FIND [@Djekidel:2018aa] we first repeated their comparison of the GM12878 and K562 using HiCcompare. Data from GM12878 and K562 was obtained from GEO (GSE63525) [@Rao:2014aa]. First the maximum resolution of each dataset was calculated using `Juicer` [Durand 2016 !!!]. Next replicates for each cell type were combined and then input into HiCcompare for joint normalization and differential analysis. This was performed at resolutions of 1MB, 100KB, 50KB, 10KB, and 5KB. The differential regions were intersected with the locations of all genes using BEDtools. Then the genes enriched in the differential regions were input into a KEGG pathway enrichment analysis using the `enrichR` R package.
