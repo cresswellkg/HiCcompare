@@ -1,11 +1,11 @@
 ---
-bibliography: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/manuscript/3D_DNA-references.bib
-csl: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: #/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/manuscript/3D_DNA-references.bib
+csl: #/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/bioinformatics.csl
 output:
+  pdf_document:
+    toc: no
   html_document:
     df_print: paged
-    toc: no
-  pdf_document:
     toc: no
 ---
 
@@ -26,7 +26,7 @@ options(stringsAsFactors = FALSE)
 
 ## GM12878 vs. K562 comparison
 
-In the FIND paper they tested their method by performing an analysis to find differences between GM12878 and K562 cell lines. We repeated this analysis with HiCcompare and compared our results to FIND. Table 6.1 lists the maximum resolution of each of the datasets from the analysis. Figure 6.1 shows the differences detected between GM12878 and K562 by HiCcompare and FIND. 
+In the FIND paper they tested their method by performing an analysis to find differences between GM12878 and K562 cell lines. We repeated this analysis with HiCcompare and compared our results to FIND. Table 6.1 lists the maximum resolution of each of the datasets from the analysis. 
 
 **Table 6.1. Maximum resolution for Hi-C data.** Maximum resolution for each dataset used in the GM12878 vs K562 comparison as calculated by the `calculate_map_resolution.sh` script from `Juicer`. 
 
@@ -38,8 +38,13 @@ In the FIND paper they tested their method by performing an analysis to find dif
 | GM12878 R2 | GSM1551575  | 8.4 KB             |
 
 
+Figure 6.1 shows the differences detected between GM12878 and K562 by HiCcompare and FIND for chromosome 1 at 1MB resolution. We were only able to get FIND to finish running at 1MB resolution. For higher resolution datasets FIND took extremely long (>72 hours running in parallel on 16 cores) and did not complete its analysis. 
+
+\break
+
 **Figure 6.1. Comparison of HiCcompare detected regions and FIND detected regions for GM12878 vs K562.** Intereactions detected by HiCcompare are shown in red, interactions detected by FIND are shown in yellow. Data shown after HiCcompare's loess normalization. VC Square root normalized data was used for the FIND analysis and the raw data was input into the HiCcompare analysis. Significant interactions detected by FIND tend to have small fold changes while differences detected by HiCcompare have much larger fold changes. Chr 1 of GM12878 vs. K562 at 1MB resolution. 
-```{r}
+
+```{r, fig.height=5, fig.width=6}
 library(dplyr)
 library(data.table)
 library(HiCcompare)
@@ -67,15 +72,18 @@ combine.MD <- function(hiccompare, find) {
 combine.MD(hic.table[[1]], find_pos[[1]])
 ```
 
+\break
 
 **Table 6.2. Number of regions detected as significant by chromosome and resolution for the HiCcompare analysis of GM12878 vs K562.**
+
 ```{r}
 load('supplementary/num_sig_table.RDA')
 
 knitr::kable(t_sig)
 ```
 
-**Table 6.3. Summary of M and A values for interaction detected by HiCcompare and FIND.**
+**Table 6.3. Summary of M and A values for interaction detected by HiCcompare and FIND.** The Mean M values (log2 fold change) were split into two groups, those above 0 and those below 0. HiCcompare detected differences with larger fold changes than those detected by FIND. Additionally the average expression for the interactions detected by HiCcompare were larger than those detected by FIND.
+
 ```{r}
 load('supplementary/MA_table.RDA')
 
@@ -86,9 +94,10 @@ knitr::kable(MA.table)
 
 ## On data with a priori known differences
 
-We performed a comparison of HiCcompare and FIND by adding in a priori known differencecs to GM12878 replicate data as described in the methods section. This was performed at fold changes of 2, 3, and 5 on 1MB data for chr 18.
+We performed a comparison of HiCcompare and FIND by adding in a priori known differencecs to GM12878 replicate data as described in the methods (section 4.7). This was performed at fold changes of 2, 3, and 5 on 1MB data for chr 18. 200 true differences were introduced at the specified fold changes between the two replicate datasets. Each dataset was then run through HiCcompare and FIND and standard performance classifiers were assessed. These results are listed in tables 6.4 - 6.6. Note that the total numbers differ between the HiCcompare and FIND columns due to the fact the HiCcompare ignores cells of the matrix with 0's while they are included in FIND. Classifiers are denoted by "TP" - true positives, "FP" - false positives, "TN" - true negatives, "FN" - false negatives, "TPR" - True Positive Rate, aka recall, or sensitivity $TP / (TP + FN)$, "SPC" - specificity, $TN / (FP + TN)$, "Accuracy" - $(TP + TN) / (TP + FP + TN + FN)$, "Precision" - $TP / (TP + FP)$, "FPR" - False Positive Rate, $FP / (FP + TN)$, "FNR" - False Negative Rate, $FN / (TP + FN)$, "FOR" - False omission rate, $FN / (FN + TN)$, "NPV" - Negative Predictive Value, $TN / (FN + TN)$, "MCC" - Matthews correlation coefficient, $\frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}$.
 
 **Table 6.4. HiCcompare vs FIND on 2 fold change introduced differences.**
+
 ```{r}
 load('supplementary/find_v_hiccompare_tables.RDA')
 knitr::kable(chr1.fc2$rates)
@@ -96,11 +105,15 @@ knitr::kable(chr1.fc2$rates)
 
 
 **Table 6.5. HiCcompare vs FIND on 3 fold change introduced differences.**
+
 ```{r}
 knitr::kable(chr1.fc3$rates)
 ```
 
+\break
+
 **Table 6.6. HiCcompare vs FIND on 5 fold change introduced differences.**
+
 ```{r}
 knitr::kable(chr1.fc5$rates)
 ```
