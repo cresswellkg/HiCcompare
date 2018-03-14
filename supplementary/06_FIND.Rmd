@@ -1,7 +1,6 @@
 ---
-bibliography: #/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/manuscript/3D_DNA-references.bib
-csl: styles.ref/bioinformatics.csl
-bibliography: 3D_DNA-references.bib
+csl: #styles.ref/bioinformatics.csl
+bibliography: #3D_DNA-references.bib
 output:
   pdf_document:
     toc: no
@@ -47,8 +46,8 @@ Here we repeat the comparison of GM12878 and K562 presented in the FIND paper [@
 library(dplyr)
 library(data.table)
 library(HiCcompare)
-load(file = 'supplementary/1mb_FIND_results.RDA')
-load(file = 'supplementary/1mb_results.RDA')
+load(file = 'data/1mb_FIND_results.RDA')
+load(file = 'data/1mb_results.RDA')
 
 combine.MD <- function(hiccompare, find) {
   # par(mfrow = c(1,2))
@@ -73,10 +72,11 @@ combine.MD(hic.table[[1]], find_pos[[1]])
 
 \break
 
-**Supplemental Table 6.2. Number of regions detected as significant by chromosome and resolution for the HiCcompare analysis of GM12878 vs K562.**
+**Supplemental Table 6.2. Number of regions detected as significant by chromosome and resolution for the HiCcompare analysis of GM12878 vs K562.** The number of interactions detected start dropping off after 50KB due to the increasing sparsity of the data.
+
 
 ```{r}
-load('supplementary/num_sig_table.RDA')
+load('data/num_sig_table.RDA')
 
 knitr::kable(t_sig)
 ```
@@ -84,7 +84,7 @@ knitr::kable(t_sig)
 **Supplemental Table 6.3. Summary of M and A values for interaction detected by HiCcompare and FIND.** The Mean M values (log2 fold change) were split into two groups, those above 0 and those below 0. HiCcompare detected differences with larger fold changes than those detected by FIND. Additionally the average expression for the interactions detected by HiCcompare were larger than those detected by FIND.
 
 ```{r}
-load('supplementary/MA_table.RDA')
+load('data/MA_table.RDA')
 
 knitr::kable(MA.table)
 ```
@@ -98,7 +98,7 @@ We performed a comparison of HiCcompare and FIND by adding in a priori known dif
 **Supplemental Table 6.4. HiCcompare vs FIND on 2 fold change introduced differences.**
 
 ```{r}
-load('supplementary/find_v_hiccompare_tables.RDA')
+load('data/find_v_hiccompare_tables.RDA')
 knitr::kable(chr1.fc2$rates)
 ```
 

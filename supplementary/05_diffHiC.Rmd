@@ -4,8 +4,8 @@
 output:
   pdf_document:
     toc: no
-csl: styles.ref/bioinformatics.csl
-bibliography: 3D_DNA-references.bib
+csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: D:/HiCcompare/3D_DNA-references.bib
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -23,7 +23,9 @@ options(stringsAsFactors = FALSE)
 
 # 5 Comparison with `diffHic`
 
-**Figure 5.1. Comparing the distributions of M and A.** The results of the differential analysis of RWPE1 Hi-C data [@Rickman:2012aa] obtained with `diffHiC` were matched with those obtained with `HiCcompare`. The frequency histograms of the log fold changes used in `diffHiC`, corresponding to the $M$ values used in `HiCcompare` (panels A and B) show that the range of the fold changes is greater in `HiCcompare` analysis. The histograms of the log counts per million (log CPM)  used in `diffHiC` corresponding to the log $A$ values used in `HiCcompare` show relative similarity of the distributions.
+Here we present more in depth results for the comparison of HiCcompare and diffHic. As diffHic only takes input in the form of raw sequencing files we were not able to directly compare the methods on introduced changes to real replicate data. We instead make a comparison with the results presented by Lun [@Lun:2015aa] on the analysis of RWPE1 Hi-C data. HiCcompare tended to detect differential interactions with larger fold changes than those detected by diffHic (Supplemental Figure 5.1). Additionally HiCcompare was able to detect differences across the range of genomic differences while diffHic tends to mostly detect differences at short genomic distances (Supplemental Figure 5.2). Supplemental Table 5.1 compares some metrics between HiCcompare and diffHic and Supplemental Table 5.2 displays the results for interactions validated by FISH.
+
+**Supplemental Figure 5.1. Comparing the distributions of M and A.** The results of the differential analysis of RWPE1 Hi-C data [@Rickman:2012aa] obtained with `diffHiC` were matched with those obtained with `HiCcompare`. The frequency histograms of the log fold changes used in `diffHiC`, corresponding to the $M$ values used in `HiCcompare` (panels A and B) show that the range of the fold changes is greater in `HiCcompare` analysis. The histograms of the log counts per million (log CPM)  used in `diffHiC` corresponding to the log $A$ values used in `HiCcompare` show relative similarity of the distributions.
 
 \begin{center}
 \includegraphics[height=280px]{../figures/diffHic_vs_hiccompare_FC.png}
@@ -38,7 +40,7 @@ options(stringsAsFactors = FALSE)
 **Supplemental Table 5.1. Chromosome-specific comparison of `HiCcompare` and `diffHic` results.**  "chr" - results are broken down by chromosome; "HiCcompare detected", "diffHic detected" - counts of region pairs detected as significantly differentially interacting by the "HiCcompare" and "diffHiC" pipelines, respectively; "number overlap" - number of region pairs detected as differentially interacting by both methods; "diffHic CNV overlaps", "diffHic.blacklist.overlaps" - significant regions detected by "diffHiC" method overlapping CNVs and blacklisted regions, respectively; "HiCcomapre mean positive M", "HiCcompare mean negative M", "diffHic mean positive M", "diffHic mean negative M" - positive/negative average log $M$ and log fold change in "HiCcompare" and "diffHiC" analyses, respectively. 
 
 ```{r}
-comparison.table <- read.table("../prostate_analysis/comparison_table.txt", sep = '\t', head = TRUE, check.names = FALSE)
+comparison.table <- read.table("data/comparison_table.txt", sep = '\t', head = TRUE, check.names = FALSE)
 # knitr::kable(comparison.table)
 pander::pander(comparison.table)
 ```
@@ -48,7 +50,7 @@ Four pairs of differentially interacting regions were validated using Fluorescen
 **Supplemental Table 5.2. Differential interactions validated by FISH detected by HiCcompare and diffHiC.** The regions containing genes listed in the "Interaction" column were previously validated by Fluorescence In Situ Hybridization (FISH) as differentially interacting [@Rickman:2012aa]. The "Difference" columns show the differences, measured as $log2(IF_1/IF_2)$, detected by the `HiCcompare` and `diffHiC` pipelines; the "Average"  columns show the mean of log interaction frequencies and CPMs; the "p-value/FDR" columns show the raw p-value ("HiCcompare") and FDR-corrected p-values for the corresponding differential interactions.
 
 ```{r}
-fish.table <- read.table("../prostate_analysis/fish_table.txt", header = TRUE, sep = '\t', check.names = FALSE)
+fish.table <- read.table("data/fish_table.txt", header = TRUE, sep = '\t', check.names = FALSE)
 colnames(fish.table) <- c("Interaction", "HiCcompare difference", "HiCcompare average", "diffHic difference", "diffHic average", "HiCcompare p-value", "HiCcompare FDR", "diffHic FDR")
 pander::pander(fish.table)
 ```
