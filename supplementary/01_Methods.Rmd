@@ -3,8 +3,8 @@
 output:
   pdf_document:
     toc: no
-csl: styles.ref/bioinformatics.csl
-bibliography: 3D_DNA-references.bib
+csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: D:/HiCcompare/3D_DNA-references.bib
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -33,7 +33,7 @@ library(gridExtra)
 library(data.table)
 ```
 
-# 1 Methods
+# 1 Supplemental Methods
 
 ## Data sources
 
@@ -386,19 +386,22 @@ determine_A <- function(raw1, raw2, FC = 2, numChanges = 100, alpha = 0.05, span
 There is much greater variability in M at higher resolutions due to the generally lower levels of average expression. The data at 100KB resolution with no changes added to it looks like this on the MD plot after difference detection with no filtering:
 
 ```{r}
-chr1.100kb.primary <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_primary_100000/primary.chr1.100000.txt")
-chr1.100kb.replicate <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_replicate_100000/replicate.chr1.100000.txt")
+chr1.100kb.primary <- read.table("data/primary.chr1.100000.txt")
+chr1.100kb.replicate <- read.table("data/replicate.chr1.100000.txt")
 
 tab <- create.hic.table(chr1.100kb.primary, chr1.100kb.replicate, 'chr1')
 tab <- hic_loess(tab, span = 0.025)
-tab <- hic_compare(tab, A.quantile = 0, Plot = TRUE)
+tab <- hic_compare(tab, A.min = 1, Plot = TRUE)
 ```
 
 Most of these detected differences have relatively low A values are not very trustworthy. 
 Varying the minimum A filtered and addng in 5,000 true differences at a 4 fold change we get: 
 
 ```{r}
-determine_A(chr1.100kb.primary, chr1.100kb.replicate, FC = 4, span = 0.025, A_seq = seq(1, 30, by = 1), numChanges = 5000, A.min = 1)
+# determine_A(chr1.100kb.primary, chr1.100kb.replicate, FC = 4, span = 0.025, A_seq = seq(1, 30, by = 1), numChanges = 5000, A.min = 1)
+tab <- create.hic.table(chr1.100kb.primary, chr1.100kb.replicate, chr = 'chr1')
+tab <- hic_loess(tab, Plot = FALSE)
+filter_params(tab, numChanges = 1000, FC = 4, Plot = FALSE)
 ```
 
 Many of the differences with high M values are derived from interactions where one IF is close to 1 and the other is in the range of 15 to 30. Filtering out any differences where A < 15 gives the best results and allows the most true differences to be detected and the least number of false positives. This may require some tuning to different datasets and resolutions.

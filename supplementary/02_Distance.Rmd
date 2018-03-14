@@ -2,8 +2,8 @@
 output:
   pdf_document:
     toc: no
-csl: styles.ref/bioinformatics.csl
-bibliography: 3D_DNA-references.bib
+csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: D:/HiCcompare/3D_DNA-references.bib
 ---
 
 \pagenumbering{gobble}

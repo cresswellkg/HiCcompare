@@ -1,0 +1,17 @@
+---
+# author: "John C. Stansfield, Kellen G. Cresswell, Vladimir I. Vladimirov, Mikhail G. Dozmorov"
+output:
+  pdf_document:
+    toc: no
+csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: D:/HiCcompare/3D_DNA-references.bib
+---
+
+# Supplemental Material
+
+1 Supplemental Methods . . . . . . . . . . . . . . . . . . . . . . . . . . .  2
+2 Distance-centric concept of chromatin interaction frequencies . . . . . . . 
+3 Persistence of bias in individually normalized Hi-C matrices . . . . . . . . 
+4 Extended evaluation of differential chromatin interaction detection . . . . .
+5 Comparison with diffHic . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6 Comparison with FIND . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

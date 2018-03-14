@@ -1,6 +1,6 @@
 ---
-csl: #styles.ref/bioinformatics.csl
-bibliography: #3D_DNA-references.bib
+csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: D:/HiCcompare/3D_DNA-references.bib
 output:
   pdf_document:
     toc: no
@@ -117,3 +117,5 @@ knitr::kable(chr1.fc3$rates)
 knitr::kable(chr1.fc5$rates)
 ```
 
+
+## References

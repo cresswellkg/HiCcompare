@@ -4,8 +4,8 @@
 output:
   pdf_document:
     toc: no
-csl: styles.ref/bioinformatics.csl
-bibliography: 3D_DNA-references.bib
+csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+bibliography: D:/HiCcompare/3D_DNA-references.bib
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -51,8 +51,8 @@ raw2 <- S6.mbol.chr1
 ```{r}
 # chr1.primary <- read.table("D:/3D_DNA/GM12878_replicates/GM12878_primary_1000000/primary.chr1.1000000.txt")
 # chr1.replicate <- read.table("D:/3D_DNA/GM12878_replicates/GM12878_replicate_1000000/replicate.chr1.1000000.txt")
-chr1.primary <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_primary_1000000/primary.chr1.1000000.txt")
-chr1.replicate <- read.table("/Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/GM12878_replicates/GM12878_replicate_1000000/replicate.chr1.1000000.txt")
+chr1.primary <- read.table("data/primary.chr1.1000000.txt")
+chr1.replicate <- read.table("data/replicate.chr1.1000000.txt")
 
 chr1.table <- create.hic.table(chr1.primary, chr1.replicate, chr = 'chr1', scale = TRUE)
 backup.table <- create.hic.table(chr1.primary, chr1.replicate, chr = 'chr1', scale = TRUE)
@@ -179,12 +179,12 @@ ROC_on_replicate <- function(raw1, raw2, FC, plot.roc = TRUE, plot.MD = TRUE, nu
   scn.table[, ':=' (adj.IF1 = IF1, adj.IF2 = IF2, adj.M = M, A = (IF1 + IF2)/2)]
   
   loess.result = hic_loess(hic.table, Plot = plot.MD)
-  loess.result <- hic_compare(loess.result, Plot = plot.MD, A.quantile = A.quantile, p.method = p.method, adjust.dist = adjust.dist)
-  chromoR.result = hic_compare(chromoR.table, Plot = plot.MD, A.quantile = A.quantile, p.method = p.method, adjust.dist = adjust.dist)
-  ice.result = hic_compare(ice.table, Plot = plot.MD, A.quantile = A.quantile, p.method = p.method, adjust.dist = adjust.dist)
-  kr.result = hic_compare(kr.table, Plot = plot.MD, A.quantile = A.quantile, p.method = p.method, adjust.dist = adjust.dist)
-  scn.result = hic_compare(scn.table, Plot = plot.MD, A.quantile = A.quantile, p.method = p.method, adjust.dist = adjust.dist)
-  ma.result = hic_compare(ma.table, Plot = plot.MD, A.quantile = A.quantile, p.method = p.method, adjust.dist = adjust.dist)
+  loess.result <- hic_compare(loess.result, Plot = plot.MD, p.method = p.method, adjust.dist = adjust.dist)
+  chromoR.result = hic_compare(chromoR.table, Plot = plot.MD, p.method = p.method, adjust.dist = adjust.dist)
+  ice.result = hic_compare(ice.table, Plot = plot.MD, p.method = p.method, adjust.dist = adjust.dist)
+  kr.result = hic_compare(kr.table, Plot = plot.MD, p.method = p.method, adjust.dist = adjust.dist)
+  scn.result = hic_compare(scn.table, Plot = plot.MD, p.method = p.method, adjust.dist = adjust.dist)
+  ma.result = hic_compare(ma.table, Plot = plot.MD, p.method = p.method, adjust.dist = adjust.dist)
   
   # combine truth vector back to other tables
   chromoR.result <- left_join(chromoR.result, truth.coords, by = c('start1' = 'start1' , 'start2' = 'start2')) %>% as.data.table()
@@ -398,6 +398,8 @@ chr1.roc4 <- ROC_on_replicate(chr1.primary, chr1.replicate, FC = 2, numChanges =
 ```{r}
 pander(signif(data.matrix(chr1.roc4$rates), digits = 3))
 ```
+
+\break
 
 ### Fold change 3
 
