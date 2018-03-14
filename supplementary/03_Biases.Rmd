@@ -2,8 +2,8 @@
 output:
   pdf_document:
     toc: no
-csl: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/bioinformatics.csl
-bibliography: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/manuscript/3D_DNA-references.bib
+csl: styles.ref/bioinformatics.csl
+bibliography: 3D_DNA-references.bib
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
