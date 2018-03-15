@@ -9,14 +9,30 @@ bibliography: D:/HiCcompare/3D_DNA-references.bib
 
 # Supplemental Material
 
-1 Supplemental Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+<!-- 1 Supplemental Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2 -->
 
-2 Distance-centric concept of chromatin interaction frequencies . . . . . . . . . 9
+<!-- 2 Distance-centric concept of chromatin interaction frequencies . . . . . . . . . 9 -->
 
-3 Persistence of bias in individually normalized Hi-C matrices . . . . . . . . . 11
+<!-- 3 Persistence of bias in individually normalized Hi-C matrices . . . . . . . . . 11 -->
 
-4 Extended evaluation of differential chromatin interaction detection . . . . . 25
+<!-- 4 Extended evaluation of differential chromatin interaction detection . . . . . 25 -->
 
-5 Comparison with diffHic . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  28
+<!-- 5 Comparison with diffHic . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 -->
 
-6 Comparison with FIND . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+<!-- 6 Comparison with FIND . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . 31 -->
+
+
+
+\begin{center}
+\textbf{Table of Contents}
+\end{center}
+
+
+|                                                                       |   |    |
+|-----------------------------------------------------------------------|---|----|
+| 1 Supplemental Methods                                                |   | 2  |
+| 2 Distance-centric concept of chromatin interaction frequencies       |   | 9  |
+| 3 Persistence of bias in individually normalized Hi-C matrices        |   | 11 |
+| 4 Extended evaluation of differential chromatin interaction detection |   | 25 |
+| 5 Comparison with diffHic                                             |   | 28 |
+| 6 Comparison with FIND                                                |   | 31 |

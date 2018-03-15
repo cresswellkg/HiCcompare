@@ -37,7 +37,7 @@ library(data.table)
 
 ## Data sources
 
-**Table 1.1. Hi-C data used in the current study.**
+**Supplemental Table 1.1. Hi-C data used in the current study.**
 
 ```{r, echo = FALSE, message=FALSE}
 S1_Table <- data.frame(File = c("GSE63525_GM12878_insitu_primary_30.hic.gz", "GSE63525_GM12878_insitu_DpnII_combined_30.hic.gz", "GSE63525_K562_combined_30.hic.gz",
@@ -288,7 +288,7 @@ knitr::kable(A.table)
 
 Here we add differences to data from replicates of the GM12878 cell line. We then perform a HiCcompare analysis using a sequence of values for the minimum A value to be filtered out. All differences with an A value less than the minimum value specified are filtered out and ignored. We then plot the number of true positives and false positives against the A value filtered. 
 
-```{r}
+```{r, eval=FALSE}
 determine_A <- function(raw1, raw2, FC = 2, numChanges = 100, alpha = 0.05, span = NA,
                              adjust.dist = TRUE, A_seq = seq(0.01, 0.4, by = 0.01), A.min = NA,
                              p.method = 'fdr') {
