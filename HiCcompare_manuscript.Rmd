@@ -1,5 +1,5 @@
 ---
-title: 'HiCcompare: an R-package for joint normalization of Hi-C datasets and differential chromatin interaction detection'
+title: 'HiCcompare: an R-package for joint normalization and comparison of Hi-C datasets'
 csl: styles.ref/bioinformatics.csl
 fontsize: 12pt
 output:
@@ -16,7 +16,13 @@ John C. Stansfield^1,3^, Kellen G. Cresswell^1^, Vladimir I. Vladimirov^2^, Mikh
 ^1^ Dept. of Biostatistics, Virginia Commonwealth University, Richmond, VA, 23298, USA  
 ^2^ Dept. of Psychiatry, Virginia Institute for Psychiatric and Behavioral Genetics, Richmond, VA, 23219, USA  
 ^3^ Equal contribution  
-^\*^ To whom correspondence should be addressed
+^\*^ To whom correspondence should be addressed: mikhail.dozmorov@vcuhealth.org [!!! Need complete contact info]
+
+Running title: HiCcompare
+
+Keywords: Hi-C, Chromosome conformation capture, Sequencing, R
+
+\break
 
 # Abstract
 
@@ -40,7 +46,7 @@ We developed an R package, HiCcompare, for the joint normalization and comparati
 
 ## 2.1 The off-diagonal concept of distance between regions in chromatin interaction matrices 
 
-Our study focuses on the joint analysis of multiple Hi-C datasets represented by chromatin interaction matrices, where rows and columns represent genomic regions (bins), and cells contain interaction counts (frequencies). The values on the diagonal trace represent interaction frequencies of self-interacting regions. Each off-diagonal trace of values represents interaction frequencies (IFs) for a pair of regions at a given unit-length distance. The unit-length distance is expressed in terms of resolution of the data (the size of genomic regions). The concept of considering interaction frequencies at each off-diagonal trace is central for the joint normalization and differential chromatin interaction detection (Fig. 1).
+Our study focuses on the joint analysis of multiple Hi-C datasets represented by chromatin interaction matrices, where rows and columns represent genomic regions (bins), and cells contain interaction counts (frequencies). The values on the diagonal trace represent interaction frequencies (IFs) of self-interacting regions. Each off-diagonal trace of values represents interaction frequencies for a pair of regions at a given unit-length distance. The unit-length distance is expressed in terms of resolution of the data (the size of genomic regions, typically measured in millions (thousands) of base pairs, MB (KB)). The concept of considering interaction frequencies at each off-diagonal trace is central for the joint normalization and differential chromatin interaction detection (Fig. 1).
 
 +-------+
 | ![](figures/fig1A.png)      |
@@ -62,7 +68,7 @@ To account for between-dataset biases, we developed a non-parametric joint norma
 | **Figure 2.** MD plot data visualization and the effects of different normalization techniques. MD plots of the differences M between two replicated Hi-C datasets (GM12878 cell line, chromosome 11, 1MB resolution, DpnII and MboI restriction enzymes) plotted vs. distance D between interacting regions. (A) Before normalization, (B) after loess joint normalization, (C) ChromoR, (D) Iterative Correction and Eigenvector decomposition (ICE), (E) Knight-Ruiz (KR), (F) Sequential Component Normalization (SCN). |
 +-------+
 
-Existing Hi-C data at high resolutions still suffer from a limited dynamic range of chromatin interaction frequencies, with the majority of them being small or zero, especially at large distances between interacting regions. This sparsity places limits on loess joint normalization, as it builds a rescaling model from many non-zero pairwise comparisons. A way to alleviate this limitation is to consider interactions only within a range of short interaction distances, where genomic regions interact more frequently, and the proportion of zero interaction frequencies is the lowest. Our evaluation of loess joint normalization showed it performs best at resolutions between 1MB and 100KB (Supplemental Section 3).
+Existing Hi-C data at high resolutions still suffer from a limited dynamic range of chromatin interaction frequencies, with the majority of them being small or zero, especially at large distances between interacting regions. This sparsity places limits on loess joint normalization, as it builds a rescaling model from many non-zero pairwise comparisons. A way to alleviate this limitation is to consider interactions only within a range of short interaction distances, where genomic regions interact more frequently, and the proportion of zero interaction frequencies is the lowest. Our evaluation of loess joint normalization showed it performs best at resolutions between 1MB and 50KB (Supplemental Section 3, Supplemental Section 6). The issue of sparsity limiting the usefulness of loess normalization will be alleviated as sequencing techniques continue to improve and Hi-C datasets with deeper sequencing become available.
 
 ## 2.3 Detecting differential chromatin interactions
 
@@ -82,24 +88,47 @@ To detect significant chromatin interaction differences, we introduced _a priori
 
 ## 2.4 Comparison with diffHiC
 
-The diffHiC pipeline was designed to process raw Hi-C sequencing datasets and detect chromatin interaction differences using the generalized linear model framework developed in the edgeR package [@Lun:2015aa]. We compared the results of Hi-C data analyzed in the diffHiC paper (human prostate epithelial cells RWPE1 over-expressing the EGR protein or GFP [@Rickman:2012aa]) with the results obtained with HiCcompare. 
+The diffHiC pipeline was designed to process raw Hi-C sequencing datasets and detect chromatin interaction differences using the generalized linear model framework developed in the edgeR package [@Lun:2015aa]. We compared the results of Hi-C data analyzed in the diffHiC paper (human prostate epithelial cells RWPE1 over-expressing the EGR protein or GFP [@Rickman:2012aa]) with the results obtained by HiCcompare. 
 
 diffHic detected a total of 5,737 significant differences (FDR < 0.05), while HiCcompare tended to be more conservative, detecting 314 differences (FDR < 0.05) and 7,620 differences when multiple testing correction was not applied (p-value < 0.05). Of the 314 differences, 121 overlapped with the regions detected by diffHic and of the 7,620 differences, 1,654 overlapped with the regions detected by diffHic. Surprisingly, although diffHiC used CNV correction in their analysis, 2,567 (44.7%) of the detected differentially interacting regions overlapped with CNV regions detected in our analysis, and/or blacklisted regions. diffHic tended to detect differentially interacting regions with smaller fold changes as compared to HiCcompare, and at shorter distances between interacting regions, while HiCcompare can detect differences across the full range of distances (Supplemental Section 5). These results suggest that detecting chromatin interaction differences represented in the MD coordinates, as implemented in HiCcompare, may be useful in detecting large chromatin interaction differences across the full range of distances, potentially having a more significant biological effect.
 
 
 ## 2.5 Comparison with FIND
 
-FIND uses a spatial Poisson process to detect differences between two Hi-C experimental conditions [@Dowen:2014aa]. FIND was intended for high resolution Hi-C data and treats interactions as spatially dependent on surrounding interactions. In order to compare HiCcompare with FIND we performed a comparative analysis between Hi-C data from K562 and GM12878 cells lines (Supplemental Section 6) as done in the FIND paper [@Djekidel:2018aa]. The data was obtained from GEO (GSE63525) generated by Rao & Huntley. The maximum resolution of each Hi-C matrix was calculated using the `calculate_map_resolution.sh` function from `Juicer` [@Durand:2016aa]. The maximum resolution for each file is displayed in Supplemental Table 6.1. Briefly, two replicates for each cell line were obtained (see Methods) and the replicate contact matrices were combined for the HiCcompare analysis. HiCcompare was used to jointly normalize the data between the cell lines and then detect differences. HiCcompare analyses were performed at 1MB, 100KB, 50KB, 10KB, and 5KB resolutions. The number of differences detected by HiCcompare are listed in Supplemental Table 6.2. Additionally the analyses of GM12878 and K562 were used to compare the run times of HiCcompare and FIND (Supplemental Section 6).
+FIND uses a spatial Poisson process to detect differences between two Hi-C experimental conditions [@Djekidel:2018aa]. FIND was intended for high resolution Hi-C data and treats interactions as spatially dependent on surrounding interactions. In order to compare HiCcompare with FIND we performed a comparative analysis between Hi-C data from K562 and GM12878 cells lines (Supplemental Section 6) as done in the FIND paper [@Djekidel:2018aa]. The data was obtained from GEO (GSE63525) generated by Rao & Huntley. The maximum resolution of each Hi-C matrix was calculated (Supplemental Table 6.1) using the `calculate_map_resolution.sh` function from `Juicer` [@Durand:2016aa]. Briefly, two replicates for each cell line were obtained (see Methods) and the replicate contact matrices were combined for the HiCcompare analysis. HiCcompare was used to jointly normalize the data between the cell lines and then detect differences. HiCcompare analyses were performed at 1MB, 100KB, 50KB, 10KB, and 5KB resolutions. The number of differences detected by HiCcompare are listed in Supplemental Table 6.2. Additionally the analyses of GM12878 and K562 were used to compare the run times of HiCcompare and FIND (Supplemental Section 6).
 
 The number of differences detected by HiCcompare at 5KB resolution (Supplemental Table 6.2) was much lower than the number FIND detected (~150,000) [@Djekidel:2018aa]. The drop off of the number of differential interactions detected at high resolution by HiCcompare can be explain by the sparsity of the data at 5KB resolution. Additionally, the large number of differences detected by FIND at 5KB resolution is questionable given that the maximum resolution of the K562 and GM12878 data was found to be ~39KB and ~9KB, respectively (Supplemental Table 6.1).
 
 The differentially interacting regions detect by HiCcompare were intersected with gene locations and a pathway enrichment analysis was performed. 
-The enrichment analysis showed that many of the differential regions contained genes involved in the immune system. Table 2 displays the results of the enrichment analysis. We also found that the enrichment analyses at each resolution were relatively consistent further indicating the strength of HiCcompare at detecting biologically relevant differences. The results of the HiCcompare and FIND gene enrichment analysis both found pathways related to the immune system suggesting that both methods can detect biologically significant differences.
+The enrichment analysis showed that many of the differential regions contained genes involved in the immune system (Table 2). We also found that the enrichment analyses at each resolution were relatively consistent further indicating the strength of HiCcompare at detecting biologically relevant differences. The results of the HiCcompare and FIND gene enrichment analysis both found pathways related to the immune system suggesting that both methods can detect biologically significant differences.
 
-**Table 2. Gene enrichment results for HiCcompare analyses.** KEGG 2016 pathways are displayed from the enrichment analyses of the 1MB, 100KB, and50KB differentially interacting regions.
+**Table 2. Gene enrichment results for HiCcompare analyses.** KEGG 2016 pathways and their corresponding q-values for the enrichment analyses of the 1MB, 100KB, and 50KB differentially interacting regions. Differentially interacting regions detected by HiCcompare were intersected with a list of all gene locations and the enriched genes were then entered into a KEGG pathway enrichment analysis.
+
+| Pathway                                  | 1MB       | 100KB     | 50KB      |
+|------------------------------------------|-----------|-----------|-----------|
+| Antigen processing and   presentation    | 3.807e-06 | 6.808e-01 | 9.974e-01 |
+| Graft-versus-host disease                | 3.807e-06 | 2.700e-01 | 9.974e-01 |
+| Systemic lupus erythematosus             | 3.807e-06 | 6.302e-17 | 1.025e-02 |
+| Phagosome                                | 5.098e-03 | 3.514e-01 | 9.974e-01 |
+| Staphylococcus aureus   infection        | 8.170e-03 | 2.354e-01 | 7.604e-01 |
+| Viral myocarditis                        | 8.170e-03 | 1.038e-01 | 9.657e-01 |
+| Allograft rejection                      | 8.170e-03 | 1.518e-01 | 9.974e-01 |
+| Viral carcinogenesis                     | 3.327e-02 | 3.659e-08 | 3.273e-01 |
+| Pathways in cancer                       | 9.162e-01 | 2.236e-02 | 9.409e-01 |
+| Proteoglycans in cancer                  | 5.147e-01 | 2.236e-02 | 8.146e-01 |
+| Rap1 signaling pathway                   | 1.000e+00 | 2.236e-02 | 9.942e-01 |
+| ErbB signaling pathway                   | 1         | 2.236e-02 | 9.974e-01 |
+| Chronic myeloid leukemia                 | 1         | 9.004e-02 | 6.107e-01 |
+| Bacterial invasion of   epithelial cells | 1         | 2.263e-01 | 1.484e-01 |
+| Platelet activation                      | 1         | 1.706e-01 | 2.884e-01 |
+| Viral carcinogenesis                     | 3.327e-02 | 3.659e-08 | 3.273e-01 |
+| PI3K-Akt signaling pathway               | 1         | 9.448e-01 | 3.540e-01 |
+| Focal adhesion                           | 9.680e-01 | 1.706e-01 | 3.385e-01 |
+| Rheumatoid arthritis                     | 2.302e-02 | 8.777e-01 | 9.974e-01 |
+| Toxoplasmosis                            | 2.768e-01 | 1.706e-01 | 3.755e-01 |
 
 
-As an additional comparison of our method with FIND we used replicate data for GM12878 data with a priori controlled changes added (see Methods) and input them into both HiCcompare and FIND. HiCcompare successfully detected the majority of the controlled changes while FIND performed poorly. See Supplemental Tables 6.4 - 6.6 for the results of this comparison. Additionally we found that the run time of FIND on Hi-C matrices at 100KB resolution or higher was extremely long (>72 hours) even when run in parallel using 16 cores on our department's cluster, while HiCcompare is able to complete an analysis in a matter of minutes for data at resolutions between 100KB and 50KB (Supplemental Fig. 1.1).
+As an additional comparison of our method with FIND we used replicate data for GM12878 data with a priori controlled changes added (see Methods) and input them into both HiCcompare and FIND. HiCcompare successfully detected the majority of the controlled changes while FIND performed poorly (Supplemental Tables 6.4 - 6.6). Additionally we found that the run time of FIND on Hi-C matrices at resolutions between 100KB and 10KB was extremely long (>72 hours) even when run in parallel using 16 cores on our department's cluster, while HiCcompare is able to complete an analysis in a matter of minutes for data at resolutions between 100KB and 50KB (Supplemental Fig. 1.1). For the 5KB data, HiCcompare was able to complete an analysis in 54 minutes while FIND took over 10 hours (Supplemental Section 6).
 
 
 ## 2.6 Preservation of A/B compartments
@@ -126,7 +155,7 @@ The discrepancy of differential chromatin interaction detection between diffHiC 
 
 In our comparison of HiCcompare and FIND (Supplemental Section 6) we found that HiCcompare performed better than FIND on data at resolutions between 1MB and 10KB. As most publicly available Hi-C data is too sparse to make meaningful inferences at resolutions greater than this, HiCcompare looks to be the better choice for detecting differences on most currently available data. In the case of extremely high resolution Hi-C data, FIND may be able to pull out more significant differences between two experimental conditions albiet at the expense of significantly longer run times. Comparing our gene enrichment results for GM12878 vs. K562 with those presented in [@Djekidel:2018aa], both methods were able to detect differences in regions involved in the immune system as would be expected to occur for these cell types. 
 
-Despite the ability of Hi-C technology to simultaneously capture all genomic interactions, current resolution of Hi-C data (1KB - 1KB) remains insufficient to resolve individual _cis_-regulatory elements (~100b-1KB). Alternative techniques, such as ChiA-PET [@Fullwood:2009aa], Capture Hi-C [@Mifsud:2015aa] have been designed to identify targeted 3D interactions, e.g., between promoters and distant regions. These data require specialized normalization methods [@Cairns:2016aa]. Our future goals include extending the loess joint normalization method for chromosome conformation capture data other than Hi-C.
+Despite the ability of Hi-C technology to simultaneously capture all genomic interactions, current resolution of Hi-C data (1MB - 1KB) remains insufficient to resolve individual _cis_-regulatory elements (~100b-1KB). Alternative techniques, such as ChiA-PET [@Fullwood:2009aa], Capture Hi-C [@Mifsud:2015aa] have been designed to identify targeted 3D interactions, e.g., between promoters and distant regions. These data require specialized normalization methods [@Cairns:2016aa]. Our future goals include extending the loess joint normalization method for chromosome conformation capture data other than Hi-C.
 
 # 4 Methods
 
@@ -193,8 +222,12 @@ The biggest advantage of loess - the ability to model any biases in the data wit
 
 HiCcompare is available on Bioconductor at [https://bioconductor.org/packages/HiCcompare/](https://bioconductor.org/packages/HiCcompare/) or on GitHub at [https://github.com/dozmorovlab/HiCcompare](https://github.com/dozmorovlab/HiCcompare). The package includes vignettes with test data and documentation for all functions. The "manuscript_bioinformatics" branch of the GitHub repository contains code to generate all results referenced in this manuscript. HiCcompare is released under the MIT open source software license.
 
-# Funding
+# Acknowledgments
 
 This work has been supported by the Institutional Research Grant IRG-14-192-40 from the American Cancer Society to MD supporting KC, and by the National Institute of Environmental Health Sciences of the National Institutes of Health under Award Number T32ES007334 supporting JS. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health and the American Cancer Society.
+
+# Disclosure Declaration
+
+[!!! Need disclosures]
 
 # References
