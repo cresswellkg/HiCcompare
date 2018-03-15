@@ -290,9 +290,9 @@ dev.off()
 
 As can be seen from the above, the MD plots for the single matrix normalization methods do not all succeed at rescaling the data and thus the main cloud of points are not centered around $M = 0$. `Loess` however, was able to take care of rescaling the data and centered the MD plot around 0. Global scaling is recommended for any comparisons between Hi-C datasets.
 
-# The effect of `loess` normalization on removing chromosome-specific biases
+## The effect of `loess` normalization on removing chromosome-specific biases
 
-## Common cutting enzyme
+### Common cutting enzyme
 
 The MD plot below displays data before and after joint `loess` normalization from GM12878 at 1MB resolution, chromosome 1, that were obtained as replicates using the same cutting enzyme. Since the data here is replicate data it is expected that there will not be many differences between the datasets. Any differences found are assumed to be due to bias in the sequencing procedures. 
 
@@ -310,7 +310,7 @@ dev.off()
 
 As can be seen by the loess fit on the "Before loess" MD plot there is not a large amount of bias between the two datasets.
 
-## Different cutting enzymes
+### Different cutting enzymes
 
 The Hi-C datasets here are from GM12878 cell lines at 1MB resolution, chromosome 1. One dataset was cut using MboI and the other using DpnII. Since different cutting enzymes are used it is expected that there will be some differences in the data due to enzyme choice. Biases between the datasets are successfully removed with `loess` normalization as can be seen in the following MD plots displaying the data before and after joint `loess` normalization. It can also be seen that biases between the datasets differ between each chromosome and dataset. The differences do not appear to follow a trend which makes a non-parametric approach to normalization better suited to the task.
 
@@ -325,7 +325,7 @@ dev.off()
 \includegraphics[height=220px]{D:/HiCcompare/supplementary/figures/s7.png}
 \end{center}
 
-# The effect of normalization methods on detecting differential chromatin interactions
+## The effect of normalization methods on detecting differential chromatin interactions
 
 To look at differences between different normalization methods we use data from GM12878 at 1MB resolution on chr 11 generated using two different cutting enzymes, MboI and DpnII. The data is scaled. For each method tested below, we also test for differences between the two datasets. No artificial changes were added to the datasets. Any differences detected by the method will be examples of existing differences between the replicated Hi-C data on the same cell line when cut by different enzymes. Since the datasets are for the same chromosome and the same cell line we should expect few differences to be detected.
 
@@ -564,7 +564,7 @@ print(paste0(counts, ' differences found between the datasets'))
 
 `Loess` is the only method that can successfully remove the bias between the two datasets. The individual normalization techniques fail to remove biases between the datasets though they may be effective at removing bias within a single dataset. `KR` normalization appears to be second to the `loess` normalization in removing global and local biases.
 
-# Comparison of `HiCcompare` vs. `ChromoR` in detecting differential chromatin interactions
+## Comparison of `HiCcompare` vs. `ChromoR` in detecting differential chromatin interactions
 
 `ChromoR` includes a function for detecting differences between two Hi-C datasets. Using the data for chromosome 11 from GM12878 as used in the above normalization comparison we add 200 _a priori_ known differences to the matrix at a 5 fold change and attempt to detect them using `ChromoR` and `loess`
 
