@@ -1,6 +1,8 @@
 ---
-csl: D:/HiCcompare/styles.ref/bioinformatics.csl
-bibliography: D:/HiCcompare/3D_DNA-references.bib
+# csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+# bibliography: D:/HiCcompare/3D_DNA-references.bib
+csl: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/genome-research.csl
+bibliography: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/3D_DNA-references.bib
 output:
   pdf_document:
     toc: no
@@ -26,7 +28,7 @@ options(stringsAsFactors = FALSE)
 
 ## GM12878 vs. K562 comparison
 
-Here we repeat the comparison of GM12878 and K562 presented in the FIND paper [@Djekidel:2018aa] using HiCcompare. First we calculated the maximum resolution of each dataset using `Juicer`. Supplemental Table 6.1 lists the maximum resolution of each of the datasets from the analysis. We then plotted the differential interactions detected by HiCcompare and FIND on a single MD plot displayed in Supplemental Fig. 6.1 for chromosome 1 at 1MB resolution. The interactions detected by HiCcompare tended to have larger fold change differences and larger average expression values than those detected by FIND (Supplemental Fig. 6.1 & Supplemental Table 6.3). Additionally FIND detected a much larger number of interactions than HiCcompare at 5KB resolution (Supplemental Table 6.2). However, we believe many of the interactions detected by FIND at 5KB resolution are not very trustworthy due to the sparsity of the data at 5KB resolution and the fact that the maximum resolutions calculated by `Juicer` are much coarser than 5KB. The mean non-zero IF for the GM12878 R1 file was 1.692 and the mean non-zero IF for the GM12878 R2 file was 1.673, further casting doubt on the ability to make any meaningful inferences at this resolution. Additionally we found that FIND takes greater than 72 hours to run on data at resolutions between 100KB and 10KB even in parallel using 16 cores on our department's cluster while HiCcompare is able to complete an analysis in a matter of minutes. For the analysis of the 5KB resolution data FIND took 10 hours and 20 minutes while HiCcompare took 54 minutes. Run times are reported in wall time and were both measured using parallel processing on 16 cores of our department's cluster. 
+Here we repeat the comparison of GM12878 and K562 presented in the FIND paper [@Djekidel:2018aa] using HiCcompare. The data were obtained from GEO (GSE63525). First we calculated the maximum resolution of each dataset using `Juicer`. Supplemental Table 6.1 lists the maximum resolution of each of the datasets from the analysis. We then plotted the differential interactions detected by HiCcompare and FIND on a single MD plot displayed in Supplemental Fig. 6.1 for chromosome 1 at 1MB resolution. The interactions detected by HiCcompare tended to have larger fold change differences and larger average expression values than those detected by FIND (Supplemental Fig. 6.1 & Supplemental Table 6.3). Additionally FIND detected a much larger number of interactions than HiCcompare at 5KB resolution (Supplemental Table 6.2). However, we believe many of the interactions detected by FIND at 5KB resolution are not very trustworthy due to the sparsity of the data at 5KB resolution and the fact that the maximum resolutions calculated by `Juicer` are much coarser than 5KB. The mean non-zero IF for the GM12878 R1 file was 1.692 and the mean non-zero IF for the GM12878 R2 file was 1.673, further casting doubt on the ability to make any meaningful inferences at this resolution. Additionally we found that FIND takes greater than 72 hours to run on data at resolutions between 100KB and 10KB even in parallel using 16 cores on our department's cluster while HiCcompare is able to complete an analysis in a matter of minutes. For the analysis of the 5KB resolution data FIND took 10 hours and 20 minutes while HiCcompare took 54 minutes. Run times are reported in wall time and were both measured using parallel processing on 16 cores of our department's cluster. 
 
 **Supplemental Table 6.1. Maximum resolution for Hi-C data.** Maximum resolution for each dataset used in the GM12878 vs K562 comparison as calculated by the `calculate_map_resolution.sh` script from `Juicer`. 
 
@@ -46,8 +48,8 @@ Here we repeat the comparison of GM12878 and K562 presented in the FIND paper [@
 library(dplyr)
 library(data.table)
 library(HiCcompare)
-load(file = 'data/1mb_FIND_results.RDA')
-load(file = 'data/1mb_results.RDA')
+load(file = '../data/1mb_FIND_results.RDA')
+load(file = '../data/1mb_results.RDA')
 
 combine.MD <- function(hiccompare, find) {
   # par(mfrow = c(1,2))
@@ -76,7 +78,7 @@ combine.MD(hic.table[[1]], find_pos[[1]])
 
 
 ```{r}
-load('data/num_sig_table.RDA')
+load('../data/num_sig_table.RDA')
 
 knitr::kable(t_sig)
 ```
@@ -84,7 +86,7 @@ knitr::kable(t_sig)
 **Supplemental Table 6.3. Summary of M and A values for interaction detected by HiCcompare and FIND.** The Mean M values (log2 fold change) were split into two groups, those above 0 and those below 0. HiCcompare detected differences with larger fold changes than those detected by FIND. Additionally the average expression for the interactions detected by HiCcompare were larger than those detected by FIND.
 
 ```{r}
-load('data/MA_table.RDA')
+load('../data/MA_table.RDA')
 
 knitr::kable(MA.table)
 ```
@@ -98,7 +100,7 @@ We performed a comparison of HiCcompare and FIND by adding in a priori known dif
 **Supplemental Table 6.4. HiCcompare vs FIND on 2 fold change introduced differences.**
 
 ```{r}
-load('data/find_v_hiccompare_tables.RDA')
+load('../data/find_v_hiccompare_tables.RDA')
 knitr::kable(chr1.fc2$rates)
 ```
 
