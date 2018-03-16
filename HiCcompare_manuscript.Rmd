@@ -18,18 +18,15 @@ John C. Stansfield^1,3^, Kellen G. Cresswell^1^, Vladimir I. Vladimirov^2^, Mikh
 ^3^ Equal contribution  
 ^\*^ To whom correspondence should be addressed: Virginia Commonwealth University, Richmond, VA, 23298, 804-827-2055, mikhail.dozmorov@vcuhealth.org
 
-Running title: Hi-C data normalization and comparison
+**Running title:** Hi-C data normalization and comparison
 
-Keywords: Hi-C, chromosome conformation capture, normalization, comparison, differential analysis, HiCcompare
+**Keywords:** Hi-C, chromosome conformation capture, normalization, comparison, differential analysis, HiCcompare
 
 \break
 
 # Abstract
 
-**Motivation:** Changes in spatial chromatin interactions are now emerging as a unifying mechanism orchestrating the regulation of gene expression. Hi-C sequencing technology allows insight into chromatin interactions on a genome-wide scale. However, Hi-C data contains many DNA sequence- and technology-driven biases. These biases prevent effective comparison of chromatin interactions aimed at identifying genomic regions differentially interacting between, e.g., disease-normal states or different cell types. Several methods have been developed for normalizing individual Hi-C datasets. However, they fail to account for biases _between two or more Hi-C datasets_, hindering comparative analysis of chromatin interactions.   
-**Results:** We developed a simple and effective method, HiCcompare, for the joint normalization and differential analysis of multiple Hi-C datasets. The method introduces a distance-centric analysis of Hi-C data by explicitly considering the distance between interacting chromatin regions. The distance-centric visualization of the differences between two Hi-C datasets on a single MD plot allows for a data-driven normalization of biases using locally weighted linear regression (loess). HiCcompare outperforms methods for normalizing individual Hi-C datasets in detecting _a priori_ known chromatin interaction differences while preserving the detection of genomic structures, such as A/B compartments.   
-**Availability:** HiCcompare is freely available as a Bioconductor R package [https://bioconductor.org/packages/HiCcompare/](https://bioconductor.org/packages/HiCcompare/).  
-**Contact:** mikhail.dozmorov@vcuhealth.org  
+Changes in spatial chromatin interactions are now emerging as a unifying mechanism orchestrating the regulation of gene expression. Hi-C sequencing technology allows insight into chromatin interactions on a genome-wide scale. However, Hi-C data contains many DNA sequence- and technology-driven biases. These biases prevent effective comparison of chromatin interactions aimed at identifying genomic regions differentially interacting between, e.g., disease-normal states or different cell types. Several methods have been developed for normalizing individual Hi-C datasets. However, they fail to account for biases _between two or more Hi-C datasets_, hindering comparative analysis of chromatin interactions. We developed a simple and effective method, HiCcompare, for the joint normalization and differential analysis of multiple Hi-C datasets. The method introduces a distance-centric analysis and visualization of the differences between two Hi-C datasets on a single plot that allows for a data-driven normalization of biases using locally weighted linear regression (loess). HiCcompare outperforms methods for normalizing individual Hi-C datasets and methods for differential analysis (diffHiC, FIND) in detecting _a priori_ known chromatin interaction differences while preserving the detection of genomic structures, such as A/B compartments. HiCcompare is freely available as a Bioconductor R package [https://bioconductor.org/packages/HiCcompare/](https://bioconductor.org/packages/HiCcompare/).  
 
 
 # 1 Introduction
