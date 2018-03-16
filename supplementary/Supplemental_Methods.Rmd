@@ -1,10 +1,12 @@
 ---
 # author: "John C. Stansfield, Kellen G. Cresswell, Vladimir I. Vladimirov, Mikhail G. Dozmorov"
+# csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+# bibliography: D:/HiCcompare/3D_DNA-references.bib
+csl: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/genome-research.csl
+bibliography: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/3D_DNA-references.bib
 output:
   pdf_document:
     toc: no
-csl: D:/HiCcompare/styles.ref/bioinformatics.csl
-bibliography: D:/HiCcompare/3D_DNA-references.bib
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -33,7 +35,7 @@ library(gridExtra)
 library(data.table)
 ```
 
-# 1 Supplemental Methods
+# Supplemental Methods
 
 ## Data sources
 
@@ -63,6 +65,7 @@ S1_Table <- S1_Table[, -ncol(S1_Table)]
 S1_Table <- S1_Table[, -ncol(S1_Table)]
 # S1_Table <- S1_Table[S1_Table$Cell.line %in% c("GM12878", "RWPE1"), ]
 S1_Table <- S1_Table[, c("Cell.line", "Resolution", "Cutting.enzyme", "URL")]
+colnames(S1_Table) <- sub(".", " ", colnames(S1_Table), fixed = TRUE) # Make dot a space
 pander::pander(S1_Table)
 ```
 
@@ -386,8 +389,8 @@ determine_A <- function(raw1, raw2, FC = 2, numChanges = 100, alpha = 0.05, span
 There is much greater variability in M at higher resolutions due to the generally lower levels of average expression. The data at 100KB resolution with no changes added to it looks like this on the MD plot after difference detection with no filtering:
 
 ```{r}
-chr1.100kb.primary <- read.table("data/primary.chr1.100000.txt")
-chr1.100kb.replicate <- read.table("data/replicate.chr1.100000.txt")
+chr1.100kb.primary   <- read.table("../data/primary.chr1.100000.txt")
+chr1.100kb.replicate <- read.table("../data/replicate.chr1.100000.txt")
 
 tab <- create.hic.table(chr1.100kb.primary, chr1.100kb.replicate, 'chr1')
 tab <- hic_loess(tab, span = 0.025)
@@ -410,13 +413,5 @@ Many of the differences with high M values are derived from interactions where o
 ### Summary 
 
 A has a right skewed distribution. Many of the differencecs detected with low corresponding average expression are not as trustworhy as differences with large values of A. Filtering is required to remove these low A differences. Filtering can be accomplished either using the quantile of A or by setting a minimum acceptable value of A. These difference approaches may work better in some situations than others. Both options are available to the user in `HiCcompare`. 
-
-## Performance evaluation
-
-**Supplemental Figure 1.1. Effect of parallelization on HiCcompare runtime** Run time (Y-axis) of `HiCcompare` normalization using 1, 4, 8 and 12 1596 MHz cores (X-axis) with 10gb of memory on CentOS 6.8 operating system. Time to normalize two RWPE datasets (see Methods) over chromosomes 1-22 was averaged over $n = 10$ runs. Data at 1Mb, 500kb, 100kb, 50kb (color legend) was used, expectedly requiring less/more run time, respectively.
-
-\begin{center}
-\includegraphics[height=200px]{../figures/runtime_summary.png}
-\end{center}
 
 ## References
