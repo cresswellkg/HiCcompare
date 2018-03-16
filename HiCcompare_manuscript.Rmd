@@ -1,6 +1,6 @@
 ---
 title: 'HiCcompare: an R-package for joint normalization and comparison of Hi-C datasets'
-csl: styles.ref/bioinformatics.csl
+csl: styles.ref/genome-research.csl
 fontsize: 12pt
 output:
   word_document:
