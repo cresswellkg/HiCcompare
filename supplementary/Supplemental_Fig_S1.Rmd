@@ -2,15 +2,17 @@
 output:
   pdf_document:
     toc: no
-csl: D:/HiCcompare/styles.ref/bioinformatics.csl
-bibliography: D:/HiCcompare/3D_DNA-references.bib
+# csl: D:/HiCcompare/styles.ref/bioinformatics.csl
+# bibliography: D:/HiCcompare/3D_DNA-references.bib
+csl: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/styles.ref/genome-research.csl
+bibliography: /Users/mdozmorov/Documents/Work/VCU_work/3D_DNA/HiCcompare/3D_DNA-references.bib
 ---
 
 \pagenumbering{gobble}
 
-# 2 Distance-centric concept of chromatin interaction frequencies
+# Distance-centric concept of chromatin interaction frequencies
 
-**Supplemental Figure 2.1. Chromatin interaction frequency dependence on distance.** The decay of interaction frequencies with distance has been modeled with power-law [@Lieberman-Aiden:2009aa; @Sanborn:2015aa], double exponential [@Tanizawa:2010aa], binomial [@Mifsud:2017aa], Poisson and negative binomial [@Jin:2013aa; @Cairns:2016aa; @Hu:2012aa; @Shavit:2014aa], and zero-inflated negative binomial [@Di-Stefano:2016aa] distributions. The aforementioned publications acknowledge deviation from the ideal power-law relationship (straight lines). Curved lines represent chromosome-specific `loess` fits of the relationship, colored by datasets. The full range of genomic distances is shown. Data from HMEC, IMR90, NHEK cell lines, using all chromosomes, 500kb resolution were used.
+**Supplemental Figure 1. Non-linear dependence of chromatin interaction frequency vs. distance.** The decay of interaction frequencies with distance has been modeled with power-law [@Lieberman-Aiden:2009aa; @Sanborn:2015aa], double exponential [@Tanizawa:2010aa], binomial [@Mifsud:2017aa], Poisson and negative binomial [@Jin:2013aa; @Cairns:2016aa; @Hu:2012aa; @Shavit:2014aa], and zero-inflated negative binomial [@Di-Stefano:2016aa] distributions. The aforementioned publications acknowledge deviation from the ideal power-law relationship (straight lines). Curved lines represent chromosome-specific `loess` fits of the relationship, colored by datasets. The full range of genomic distances is shown. Data from HMEC, IMR90, NHEK cell lines, using all chromosomes, 500kb resolution were used.
 
 \begin{center}
 \includegraphics[height=250px]{../figures/fig1B.png}
