@@ -162,15 +162,15 @@ In our comparison with FIND (Supplemental Section 6) we found that HiCcompare pe
 
 Despite the ability of Hi-C technology to simultaneously capture all genomic interactions, current resolution of Hi-C data (1MB - 1KB) remains insufficient to resolve individual _cis_-regulatory elements (~100b-1KB). Alternative techniques, such as ChiA-PET [@Fullwood:2009aa], Capture Hi-C [@Mifsud:2015aa] have been designed to identify targeted 3D interactions, e.g., between promoters and distant regions. These data require specialized normalization [@Cairns:2016aa] and differential analysis [@Lareau:2017aa] methods. Our future goals include extending the loess joint normalization method for chromosome conformation capture data other than Hi-C.
 
-# 4 Methods
+# Methods
 
-## 4.1 Visualization of the differences between two Hi-C datasets using an MD plot
+## Visualization of the differences between two Hi-C datasets using an MD plot
 
 A chromosome-specific Hi-C matrix is a square matrix of size $N \times N$, where $N$ is the number of genomic regions of size $X$ on a chromosome. The size $X$ of the genomic regions defines the resolution of the Hi-C data. Each cell in the matrix contains an interaction frequency $IF_{i,j}$, where $i$ and $j$ are the indices of the interacting regions. For this study, data in the sparse upper triangular format from the GM12878 and RWPE1 cell lines were used (Supplemental Section 1).
 
 The first step of the HiCcompare procedure is to convert the data into what we refer to as an MD plot. The MD plot is similar to the MA plot (Bland-Altman plot) commonly used to visualize gene expression differences [@dudoit2002statistical]. $M$ is defined as the log difference between the two data sets $M = log_2(IF_2/IF_1)$, where $IF_1$ and $IF_2$ are interaction frequencies of the first and the second Hi-C datasets, respectively. $D$ is defined as the distance between two interacting regions, expressed in unit-length of the $X$ resolution of the Hi-C data. In terms of chromatin interaction matrices, $D$ corresponds to the off-diagonal traces of interaction frequencies (Supplemental Fig. 2.1). Because chromatin interaction matrices are sparse, i.e. contain an excess of zero interaction frequencies, by default only the non-zero pairwise interaction are used for the construction of the MD plot with an option to use partial interactions, i.e. with a zero value in one of the matrices and a non-zero IF in the other.
 
-## 4.2 Joint normalization of multiple Hi-C data using loess regression
+## Joint normalization of multiple Hi-C data using loess regression
 
 After the transformation of the data into an MD plot, loess regression [@cleveland1979robust] is performed with $D$ as the predictor for $M$. The fitted values are then used to normalize the original IFs: 
 
@@ -180,11 +180,11 @@ log_2(\hat{IF}_{2D}) = log_2(IF_{2D}) - f(D)/2
 
 where $f(D)$ is the predicted value from the loess regression at a distance $D$. The $log_2(\hat{IF})$ values are then anti-logged to obtain the normalized IFs. Note that for both Hi-C datasets the average interaction frequency remains unchanged, as $IF_1$ is increased by the factor of $f(D)/2$ while $IF_2$ is decreased by the same amount. Any normalized IFs with values less than one are not considered in further analyses. The joint normalization was tested against five methods for normalizing individual Hi-C matrices, ChromoR [@Shavit:2014aa], ICE [@Imakaev:2012aa], KR [@knight2012fast], SCN [@Cournac:2012aa], MA [@Lun:2015aa] (Supplemental Section 1).
 
-## 4.3 Excluding potentially problematic regions from the joint normalization
+## Excluding potentially problematic regions from the joint normalization
 
 The between-dataset biases may occur due to large-scale genomic rearrangements and copy number variants (CNVs), a frequent case in tumor-normal comparisons [@Rickman:2012aa]. Similar to removing other biases, the joint loess normalization removes CNV-driven biases by design, allowing for the detection of chromatin interaction differences within CNV regions. However, CNVs introduce large changes in chromatin interactions [@Servant:2015aa], which may be of interest to consider separately. Therefore, unless cells/tissues with normal karyotypes are compared, we provide functionality for the detection and removal of genomic regions containing CNVs from the joint normalization. The QDNAseq [@Scheinin:2014aa] R package is used to detect and exclude CNVs from the HiCcompare analysis. Alternatively, CNV regions can be detected separately and provided to HiCcompare as a BED file. Additionally, the HiCcompare package includes the ENCODE blacklisted regions for hg19 and hg38 genome assemblies, which can be excluded from further analysis. 
 
-## 4.4 Detection of differential chromatin interactions
+## Detection of differential chromatin interactions
 
 After joint normalization, the chromatin interaction matrices are ready to be compared for differences. Again, the MD plot is used to represent the differences $M$ between two normalized datasets at a distance $D$. The jointly normalized $M$ values are centered around 0 and are approximately normally distributed across all distances (Supplemental Section 1). $M$ values can be converted to Z-scores using the standard approach:
 
@@ -193,37 +193,37 @@ Z_i = \frac{M_i - \bar{M}}{\sigma_M}
 $$
 where $\bar{M}$ is the mean value of all $M$'s on the chromosome and $\sigma_M$ is the standard deviation of all $M$ values on the chromosome and $i$ is the $i$th interacting pair on the chromosome. 
 
-## 4.5 Filtering low-abundance interaction pairs
+## Filtering low-abundance interaction pairs
 
 During Z-score conversion the average expression of each interacting pair is considered. Due to the nature of $M$, a difference represented by an interacting pair with IFs 1 and 10 is equivalent to an interacting pair of IFs 10 and 100 with both differences producing an $M$ value of 3.32. However, the average expression of these two differences is 5.5 and 55, respectively. Differences with higher average expression are supported by the larger number of sequencing reads and are therefore more trustworthy than the low average expression differences. Thus, we filter out differences with low average expression by setting the Z-scores to 0 when average expression ($A$) is less than a user set quantile (typically 5-20%) or a user set specific value of $A$ (Supplemental Section 1). Filtering takes place such that the $\bar{M}$ and $\sigma_M$ are calculated using only the $M$ values remaining after filtering. The Z-scores can then be converted to p-values using the standard normal distribution.
 
-## 4.6 Multiple testing correction
+## Multiple testing correction
 
 Analyzing Hi-C data for differences necessarily involves testing of multiple hypotheses. Multiple testing correction (False Discovery Rate (FDR) by default) is applied on a per-distance basis by default, with an option to apply it on a chromosomal basis.
 
-## 4.7 Benchmarking the differential chromatin interaction detection
+## Benchmarking the differential chromatin interaction detection
 
 As there is no "gold standard" for differential chromatin interactions, we created such _a priori_ known differences by introducing controlled changes to replicate Hi-C datasets [@Dozmorov:2010aa]. To introduce these a priori known differences we start with two replicates of Hi-C data from the same cell type. It is assumed that any differences in these replicates are due to noise or technical biases. Next we randomly sample a specified number of entries in the contact matrix. These sampled entries are where the changes will be introduced. The IFs for each of these entries in the two matrices are set to their average value between the replicates and then one of them is multiplied by a specified fold change. This introduces a true difference at an exact fold change between the two replicates. The benefit of using joint normalization vs. individually normalized datasets was quantified by the improvement in power of detecting the pre-defined chromatin interaction differences. Standard classifier performance measures (Supplemental Section 4), summarized in the Matthews Correlation Coefficient (MCC) metric, were assessed. The results of the HiCcompare analysis were further compared with those obtained with diffHiC method [@Lun:2015aa].
 
-## 4.8 Comparison with diffHic
+## Comparison with diffHic
 
 To compare HiCcompare with diffHic we performed a HiCcompare analysis on RWPE1 Hi-C data (Supplemental Table 1.1) [@Rickman:2012aa] using HiCcompare. This was compared to the analysis performed in the diffHic paper [@Lun:2015aa]. We performed the analysis at 1MB resolution as done by Lun et al. Because diffHic takes unaligned Hi-C data as input it was not possible to directly compare our method to diffHic using introduced known changes. We performed an overlap analysis of the regions detected by our method with the regions detected by diffHic. Additionally, we compared the fold changes and average expression values of the regions detected by each method. 
 
-## 4.9 Comparison with FIND
+## Comparison with FIND
 
-In order to make a comparison with FIND [@Djekidel:2018aa] we first repeated their comparison of the GM12878 and K562 using HiCcompare. Data from GM12878 and K562 was obtained from GEO (GSE63525, samples GSM1551574, GSM1551575, GSM1551620, and GSM1551623) [@Rao:2014aa]. First the maximum resolution of each dataset was calculated using `Juicer` [@Durand:2016aa]. Next replicates for each cell type were combined and then input into HiCcompare for joint normalization and differential analysis. This was performed at resolutions of 1MB, 100KB, 50KB, 10KB, and 5KB. The differential regions were intersected with the locations of all genes using BEDtools. Then the genes enriched in the differential regions were input into a KEGG pathway enrichment analysis using the `enrichR` R package.
+In order to make a comparison with FIND [@Djekidel:2018aa] we first repeated their comparison of the GM12878 and K562 using HiCcompare. Data from GM12878 and K562 was obtained from GEO (GSE63525, samples GSM1551574, GSM1551575, GSM1551620, and GSM1551623) [@Rao:2014aa]. First the maximum resolution of each dataset was calculated using `Juicer` [@Durand:2016aa]. Next replicates for each cell type were combined and then input into HiCcompare for joint normalization and differential analysis. This was performed at resolutions of 1MB, 100KB, 50KB, 10KB, and 5KB. The differential regions were intersected with the locations of all genes using BEDtools. Then the genes enriched in the differential regions were input into a KEGG pathway enrichment analysis using EnrichR [@Chen:2013aa].
 
-Additionally, the two replicates of GM12878 from section 4.8 were used as the basis for comparing HiCcompare and FIND when A priori known differences were introduced into these replicates as described in section 4.7. For the data to be entered into FIND we used the VC squared normalization method from `Juicer` as described in the FIND paper and the raw data was entered into HiCcompare. We performed this analysis at a resolutions of 1MB (we encountered issues due to extremely long run times of FIND when attempting comparisons at higher resolutions) with fold changes of 2, 3, and 5 for the true changes. Standard classifier performance measures were calculated for each method and MD plots showing where each method was detecting differences were produced. 
+Additionally, the two replicates of GM12878 were used as the basis for comparing HiCcompare and FIND when _a priori_ known differences were introduced into these replicates. For the data to be entered into FIND we used the VC squared normalization method from `Juicer` as described in the FIND paper and the raw data was entered into HiCcompare. We performed this analysis at a resolutions of 1MB (we encountered issues due to extremely long run times of FIND when attempting comparisons at higher resolutions) with fold changes of 2, 3, and 5 for the true changes. Standard classifier performance measures were calculated for each method and MD plots showing where each method was detecting differences were produced. 
 
-## 4.10 Concordance between A/B genomic compartments
+## Concordance between A/B genomic compartments
 
 To assess the effect of normalization of the detection of A/B compartments, they were defined using the Principal Components Analysis (PCA) method [@Lieberman-Aiden:2009aa] using the raw, jointly and individually normalized GM12878 (Supplemental Table 1.1) Hi-C data [@Rao:2014aa]. The concordance of compartment detection was evaluated using three metrics: 1) the Pearson correlation coefficient between the vectors of principal components (PCs) detected from raw and normalized data, 2) the overlap of signs of PCs defining A (positive) and B (negative) compartments, and 3) the Jaccard overlap statistics.
 
-## 4.11 Parallelization
+## Parallelization
 
 The biggest advantage of loess - the ability to model any biases in the data without explicitly specifying them - comes at the cost of increased computation. We implemented a parallelization strategy for processing chromosome-specific chromatin interaction matrices on multiple cores, improving the total run time (Supplemental Section 1). The parallelization strategy makes use of the Bioconductor BiocParallel R package.
 
-## 4.12 Availability and Future Directions
+## Software availability
 
 HiCcompare is available on Bioconductor at [https://bioconductor.org/packages/HiCcompare/](https://bioconductor.org/packages/HiCcompare/) or on GitHub at [https://github.com/dozmorovlab/HiCcompare](https://github.com/dozmorovlab/HiCcompare). The package includes vignettes with test data and documentation for all functions. The "manuscript_bioinformatics" branch of the GitHub repository contains code to generate all results referenced in this manuscript. HiCcompare is released under the MIT open source software license.
 
@@ -231,8 +231,8 @@ HiCcompare is available on Bioconductor at [https://bioconductor.org/packages/Hi
 
 This work has been supported by the Institutional Research Grant IRG-14-192-40 from the American Cancer Society to MD supporting KC, and by the National Institute of Environmental Health Sciences of the National Institutes of Health under Award Number T32ES007334 supporting JS. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health and the American Cancer Society.
 
+<!--
 # Disclosure Declaration
-
 [!!! Need disclosures]
-
+-->
 # References
