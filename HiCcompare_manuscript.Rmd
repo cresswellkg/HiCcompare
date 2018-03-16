@@ -20,7 +20,7 @@ John C. Stansfield^1,3^, Kellen G. Cresswell^1^, Vladimir I. Vladimirov^2^, Mikh
 
 Running title: Hi-C data normalization and comparison
 
-Keywords: Hi-C, Chromosome conformation capture, Sequencing, R
+Keywords: Hi-C, chromosome conformation capture, normalization, comparison, differential analysis, HiCcompare
 
 \break
 
