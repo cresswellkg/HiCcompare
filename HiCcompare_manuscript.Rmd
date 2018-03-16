@@ -4,7 +4,7 @@ csl: styles.ref/bioinformatics.csl
 fontsize: 12pt
 output:
   word_document:
-#    reference_docx: styles.doc/bioinformatics_styles_singlespace.docx
+    reference_docx: styles.doc/genomeresearch_styles_doublespace.docx
   pdf_document:
     fig_caption: no
   html_document: null
